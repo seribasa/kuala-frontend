@@ -1,0 +1,83 @@
+<div class="bg-gray-50 text-gray-800">
+  <div class="flex h-screen">
+    <aside class="w-64 bg-white flex flex-col justify-between p-4 shadow-lg">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 mb-8">Kuala</h1>
+        <nav>
+          <ul>
+            <li class="mb-2">
+              <a [routerLink]="['dashboard']" routerLinkActive="bg-red-400 text-white"
+                 class="flex items-center px-4 py-2 rounded-lg"
+                 [class.text-gray-600]="!isActive('dashboard')"
+                 [class.hover:bg-gray-100]="!isActive('dashboard')">
+                <span class="material-icons">home</span>
+                <span class="ml-3">Home</span>
+              </a>
+            </li>
+            <li class="mb-2">
+              <a [routerLink]="['patients']" routerLinkActive="bg-red-400 text-white"
+                 class="flex items-center px-4 py-2 rounded-lg"
+                 [class.text-gray-600]="!isActive('patients')"
+                 [class.hover:bg-gray-100]="!isActive('patients')">
+                <span class="material-icons">people_alt</span>
+                <span class="ml-3">Patient</span>
+              </a>
+            </li>
+            <li class="mb-2">
+              <a [routerLink]="['appointments']" routerLinkActive="bg-red-400 text-white"
+                 class="flex items-center px-4 py-2 rounded-lg"
+                 [class.text-gray-600]="!isActive('appointments')"
+                 [class.hover:bg-gray-100]="!isActive('appointments')">
+                <span class="material-icons">calendar_today</span>
+                <span class="ml-3">Appointment</span>
+              </a>
+            </li>
+            <li class="mb-2">
+              <a [routerLink]="['profile']" routerLinkActive="bg-red-400 text-white"
+                 class="flex items-center px-4 py-2 rounded-lg"
+                 [class.text-gray-600]="!isActive('profile')"
+                 [class.hover:bg-gray-100]="!isActive('profile')">
+                <span class="material-icons">person</span>
+                <span class="ml-3">Profile</span>
+              </a>
+            </li>
+            <li class="mb-2">
+              <a [routerLink]="['billing']" routerLinkActive="bg-red-400 text-white"
+                 class="flex items-center px-4 py-2 rounded-lg"
+                 [class.text-gray-600]="!isActive('billing')"
+                 [class.hover:bg-gray-100]="!isActive('billing')">
+                <span class="material-icons">receipt_long</span>
+                <span class="ml-3">Billing</span>
+              </a>
+            </li>
+            <li class="mb-2">
+              <a (click)="logout()" routerLinkActive="bg-red-400 text-white"
+                 class="flex items-center px-4 py-2 rounded-lg">
+                <span class="material-icons">logout</span>
+                <span class="ml-3">Logout</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="mb-4">
+        <nav>
+          <ul>
+            <li class="mb-2">
+              <a class="text-sm text-gray-600 hover:text-gray-900" href="#">About Us</a>
+            </li>
+            <li class="mb-2">
+              <a class="text-sm text-gray-600 hover:text-gray-900" href="#">Help</a>
+            </li>
+            <li>
+              <a class="text-sm text-gray-600 hover:text-gray-900" href="#">Contact</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+    <main class="flex-1 p-8 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
