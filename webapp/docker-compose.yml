@@ -1,0 +1,10 @@
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - API_BASE_URL=https://kuala-api-staging.seribasa.digital
+    ports:
+      - "8080:80"
+    restart: unless-stopped
