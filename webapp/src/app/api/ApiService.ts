@@ -1,6 +1,6 @@
 import {inject, Injectable, InjectionToken} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {firstValueFrom, Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
@@ -25,39 +25,37 @@ export class ApiService {
     this.authToken = token;
   }
 
-  get<T>(url: string, options?: ApiRequestOptions): Observable<T> {
+  async get<T>(url: string, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('GET', url, undefined, options);
   }
-
-  post<T>(url: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
+  async post<T>(url: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('POST', url, body, options);
   }
-
-  put<T>(url: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
+  async put<T>(url: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('PUT', url, body, options);
   }
-
-  patch<T>(url: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
+  async patch<T>(url: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('PATCH', url, body, options);
   }
-
-  delete<T>(url: string, options?: ApiRequestOptions): Observable<T> {
+  async delete<T>(url: string, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('DELETE', url, undefined, options);
   }
 
-  private request<T>(
+  private async request<T>(
     method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     url: string,
     body?: unknown,
     options?: ApiRequestOptions
-  ): Observable<T> {
+  ): Promise<T> {
     const fullUrl = this.joinUrl(this.baseUrl, url);
     const headers = this.buildHeaders(options?.headers);
     const params = this.buildParams(options?.params);
 
-    return this.http
+    const obs$ = this.http
       .request<T>(method, fullUrl, {body, headers, params})
       .pipe(catchError((error) => this.handleError(error, {method, fullUrl})));
+
+    return firstValueFrom(obs$);
   }
 
   private buildHeaders(custom?: HttpHeaders | Record<string, string>): HttpHeaders {

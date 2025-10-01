@@ -1,27 +1,30 @@
-<!--</main>-->
-<div class="min-h-screen bg-white flex flex-col justify-between text-center">
+<div class="min-h-screen bg-white flex flex-col">
+  <mat-toolbar color="primary" class="!bg-white !text-gray-900 border-b shadow-sm">
+    <div class="w-full max-w-7xl mx-auto flex items-center justify-between">
+      <button mat-button class="!p-0" (click)="goToLanding()">
+        <span class="flex items-center space-x-2">
+          <mat-icon fontIcon="star"></mat-icon>
+          <span class="font-semibold text-lg">Kuala</span>
+        </span>
+      </button>
 
-  <!-- Navbar -->
-  <header class="border-b shadow-sm">
-    <div class="flex items-center justify-between p-4 max-w-7xl mx-auto">
-      <div class="flex items-center space-x-2" (click)="goToLanding()">
-        <span class="material-icons">star</span>
-        <span class="font-semibold text-lg">Kuala</span>
-      </div>
-      <nav class="space-x-6 text-sm font-medium">
-        <a href="#" class="hover:underline">About Us</a>
-        <a href="#" class="hover:underline">Help</a>
-        <a href="#" class="hover:underline">Contact</a>
+      <nav class="hidden md:flex items-center space-x-2">
+        <a mat-button>About Us</a>
+        <a mat-button>Help</a>
+        <a mat-button>Contact</a>
       </nav>
+
+      <button mat-icon-button class="md:!hidden" aria-label="Open menu">
+        <mat-icon fontIcon="menu"></mat-icon>
+      </button>
     </div>
-  </header>
+  </mat-toolbar>
 
   <main class="flex-grow flex items-center justify-center">
     <router-outlet></router-outlet>
   </main>
 
-  <!-- Footer -->
-  <footer class="text-xs text-gray-500 py-4">
+  <footer class="text-xs text-gray-500 py-4 text-center">
     © 2025 Seri Basa Digital
   </footer>
 </div>
