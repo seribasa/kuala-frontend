@@ -8,7 +8,7 @@ import {API_BASE_URL} from './api/ApiService';
 const apiBaseUrl =
   (typeof window !== 'undefined' && (window as any).__env && (window as any).__env.API_BASE_URL)
     ? (window as any).__env.API_BASE_URL
-    : 'https://kuala-api-staging.seribasa.digital';
+    : 'https://ca90df25-4c3c-43fc-bf88-0b182cd3ad5d.mock.pstmn.io';
 
 export const appConfig: ApplicationConfig = {
   providers: [
