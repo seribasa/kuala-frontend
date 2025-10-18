@@ -1,24 +1,28 @@
 import {Component} from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
   imports: [
     RouterLink,
-    RouterOutlet
+    RouterOutlet,
+    RouterLinkActive
   ],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
 export class Home {
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
   }
 
   isActive(route: string): boolean {
     return this.router.url.includes(route);
   }
 
-  logout(): void {
+  async logout() {
+    await this.authService.logout();
+    await this.router.navigate(['/']);
   }
 }
