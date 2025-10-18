@@ -3,16 +3,16 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/route
 import {AuthService} from '../auth/auth.service';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-portal',
   imports: [
-    RouterLink,
+    RouterLinkActive,
     RouterOutlet,
-    RouterLinkActive
+    RouterLink
   ],
-  templateUrl: './home.html',
-  styleUrl: './home.css'
+  templateUrl: './portal.html',
+  styleUrl: './portal.css'
 })
-export class Home {
+export class Portal {
 
   constructor(private router: Router, private authService: AuthService) {
   }
@@ -22,7 +22,12 @@ export class Home {
   }
 
   async logout() {
-    await this.authService.logout();
-    await this.router.navigate(['/']);
+    try {
+      await this.authService.logout();
+      await this.router.navigate(['/']);
+    } catch (err) {
+      console.error('Logout failed', err);
+    }
   }
+
 }
