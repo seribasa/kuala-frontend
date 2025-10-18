@@ -15,19 +15,19 @@
               </a>
             </li>
             <li class="mb-2">
-              <a [routerLink]="['patients']" routerLinkActive="bg-red-400 text-white"
+              <a [routerLink]="['patient']" routerLinkActive="bg-red-400 text-white"
                  class="flex items-center px-4 py-2 rounded-lg"
-                 [class.text-gray-600]="!isActive('patients')"
-                 [class.hover:bg-gray-100]="!isActive('patients')">
+                 [class.text-gray-600]="!isActive('patient')"
+                 [class.hover:bg-gray-100]="!isActive('patient')">
                 <span class="material-icons">people_alt</span>
                 <span class="ml-3">Patient</span>
               </a>
             </li>
             <li class="mb-2">
-              <a [routerLink]="['appointments']" routerLinkActive="bg-red-400 text-white"
+              <a [routerLink]="['appointment']" routerLinkActive="bg-red-400 text-white"
                  class="flex items-center px-4 py-2 rounded-lg"
-                 [class.text-gray-600]="!isActive('appointments')"
-                 [class.hover:bg-gray-100]="!isActive('appointments')">
+                 [class.text-gray-600]="!isActive('appointment')"
+                 [class.hover:bg-gray-100]="!isActive('appointment')">
                 <span class="material-icons">calendar_today</span>
                 <span class="ml-3">Appointment</span>
               </a>

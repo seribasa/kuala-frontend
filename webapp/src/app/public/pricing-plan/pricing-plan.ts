@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import {NgOptimizedImage} from '@angular/common';
-import {AuthService} from '../auth/auth.service';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-pricing-plan',
@@ -38,7 +38,7 @@ export class PricingPlan implements OnInit {
   }
 
   async login() {
-    const redirectTo = window.location.origin + '/home';
+    const redirectTo = window.location.origin + '/dashboard';
     await this.authService.initiateLogin(redirectTo);
   }
 
