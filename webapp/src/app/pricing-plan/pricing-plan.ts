@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {PricingPlanService} from './pricing-plan.service';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {FormsModule} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
 import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
 import {NgOptimizedImage} from '@angular/common';
+import {AuthService} from '../auth/auth.service';
 
 @Component({
   selector: 'app-pricing-plan',
@@ -29,15 +29,17 @@ export class PricingPlan implements OnInit {
 
   billingCycle: string = 'monthly';
 
-  constructor(private router: Router,
-              private pricingPlanService: PricingPlanService) {
+  constructor(private pricingPlanService: PricingPlanService,
+              public authService: AuthService) {
   }
 
-  ngOnInit(): void {
-    this.loadSubscriptionPlans();
+  async ngOnInit() {
+    await this.loadSubscriptionPlans();
   }
 
-  goToLogin(): void {
+  async login() {
+    const redirectTo = window.location.origin + '/home';
+    await this.authService.initiateLogin(redirectTo);
   }
 
   async loadSubscriptionPlans() {

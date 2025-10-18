@@ -1,6 +1,6 @@
 import {inject, Injectable, InjectionToken} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {firstValueFrom, Observable, throwError} from 'rxjs';
+import {firstValueFrom, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
@@ -16,7 +16,11 @@ export interface ApiRequestOptions {
 @Injectable({providedIn: 'root'})
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = inject(API_BASE_URL);
+  private readonly _baseUrl = inject(API_BASE_URL);
+
+  get baseUrl(): string {
+    return this._baseUrl;
+  }
 
   // Optional: centrally managed token if you don’t use an interceptor
   private authToken: string | null = null;
@@ -31,12 +35,15 @@ export class ApiService {
   async post<T>(url: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('POST', url, body, options);
   }
+
   async put<T>(url: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('PUT', url, body, options);
   }
+
   async patch<T>(url: string, body?: unknown, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('PATCH', url, body, options);
   }
+
   async delete<T>(url: string, options?: ApiRequestOptions): Promise<T> {
     return this.request<T>('DELETE', url, undefined, options);
   }

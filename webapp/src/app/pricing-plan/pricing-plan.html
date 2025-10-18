@@ -1,5 +1,4 @@
 <div class="flex flex-col items-center p-6">
-  <!-- Header -->
   <mat-card class="w-full rounded-2xl shadow-lg bg-red-200/50 p-8 text-center">
     <img mat-card-image alt="logo SBD" class="mx-auto"
          ngSrc="/assets/images/logo-SBD-removebg.png" height="408" width="612"/>
@@ -17,7 +16,6 @@
     <h3 class="text-3xl font-bold">Choose Your Plan Before Registering an Account</h3>
   </div>
 
-  <!-- Toggle -->
   <div class="flex justify-center mt-6">
     <mat-button-toggle-group
       [value]="billingCycle"
@@ -42,7 +40,7 @@
           </ul>
         </div>
         @if (plan.selectable) {
-          <button mat-raised-button color="primary" class="mt-6 w-full">Select Plan</button>
+          <button (click)="login()" mat-raised-button color="primary" class="mt-6 w-full">Select Plan</button>
         } @else {
           <button mat-raised-button color="primary" class="mt-6 w-full">Contact Us</button>
         }
