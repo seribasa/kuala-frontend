@@ -3,6 +3,10 @@ import {PricingPlan} from './pricing-plan';
 import {Router} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {PricingPlanService} from './pricing-plan.service';
+import {Public} from '../public';
+import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
+import {API_BASE_URL} from '../../api/ApiService';
 
 // Introduce types to avoid `any` in tests
 type Price = { currency: 'USD' | string; amount: number };
@@ -37,6 +41,15 @@ describe('PricingPlan', () => {
   };
 
   beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Public],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        {provide: API_BASE_URL, useValue: '/'}
+      ]
+    }).compileComponents();
+
     mockPricingPlanService = jasmine.createSpyObj<PricingPlanService>('PricingPlanService', ['listSubscriptionPlans']);
     mockRouter = jasmine.createSpyObj<Router>('Router', ['navigateByUrl']);
     await createComponent();
