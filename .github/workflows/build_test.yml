@@ -23,15 +23,18 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: webapp
 
       - name: Install Angular CLI 20.2.0
         run: npm install -g @angular/cli@20.2.0
 
       - name: Build Angular app
-        run: ng build 
+        run: ng build
+        working-directory: webapp
 
       - name: Run unit tests
-        run: ng test 
+        run: ng test
+        working-directory: webapp
 
       - name: Run e2e tests
-        run: ng e2e 
+        run: ng e2e
