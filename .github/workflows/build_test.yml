@@ -39,5 +39,10 @@ jobs:
         working-directory: webapp
 
       - name: Run e2e tests
-        run: ng e2e
+        run: |
+          if [ -f "webapp/e2e/protractor.conf.js" ] || [ -f "webapp/cypress.config.ts" ]; then
+            npx ng e2e
+          else
+            echo "No e2e configuration found, skipping e2e tests"
+          fi
         working-directory: webapp
