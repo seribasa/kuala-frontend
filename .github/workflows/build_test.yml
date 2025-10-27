@@ -11,7 +11,10 @@ on:
 
 jobs:
   build-and-test:
-    if: github.event_name == 'push' || github.event.action == 'opened' || github.event.action == 'reopened'
+    # Skip push jobs if there is an open PR for the same branch
+    if: |
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'push' && github.ref != 'refs/heads/${{ github.head_ref }}')
     runs-on: ubuntu-latest
 
     steps:
