@@ -5,11 +5,13 @@ on:
     branches:
       - '**'
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - '**'
 
 jobs:
   build-and-test:
+    if: github.event_name == 'push' || github.event.action == 'opened' || github.event.action == 'reopened'
     runs-on: ubuntu-latest
 
     steps:
