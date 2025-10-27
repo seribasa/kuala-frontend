@@ -33,7 +33,7 @@ jobs:
         working-directory: webapp
 
       - name: Run unit tests
-        run: ng test
+        run: ng test --watch=false --browsers=ChromeHeadlessNoSandbox
         working-directory: webapp
 
       - name: Run e2e tests
