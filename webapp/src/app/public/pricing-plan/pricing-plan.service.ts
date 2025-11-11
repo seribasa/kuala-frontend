@@ -7,7 +7,7 @@ export class PricingPlanService {
   constructor(private readonly apiService: ApiService) {
   }
 
-  listSubscriptionPlans() {
-    return this.apiService.get(`/plans`);
+  listSubscriptionPlans(interval?: string) {
+    return this.apiService.get(`/plans`, {params: {interval: interval}});
   }
 }
