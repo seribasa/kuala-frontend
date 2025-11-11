@@ -15,7 +15,7 @@ import {AuthService} from './auth/auth.service';
 const apiBaseUrl =
   (typeof window !== 'undefined' && (window as any).__env && (window as any).__env.API_BASE_URL)
     ? (window as any).__env.API_BASE_URL
-    : 'https://kuala-base-staging.peltops.com/functions/v1/kuala';
+    : 'https://kuala-api-staging.seribasa.digital/v1/kuala';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -34,45 +34,46 @@ export class PricingPlan implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loadSubscriptionPlans();
+    await this.loadAllSubscriptionPlans();
   }
 
   async login() {
-    const redirectTo = window.location.origin + '/dashboard';
+    const redirectTo = window.location.origin + '/portal';
     await this.authService.initiateLogin(redirectTo);
   }
 
-  async loadSubscriptionPlans() {
+  async loadAllSubscriptionPlans() {
     try {
-      const response = await this.pricingPlanService.listSubscriptionPlans();
-      this.mapPlans(response);
+      const response = await this.pricingPlanService.listSubscriptionPlans('month');
+      this.monthlyPlans = this.mapPlans(response);
+    } catch (err) {
+      console.error('Failed to load subscription plans', err);
+    }
+
+    try {
+      const response = await this.pricingPlanService.listSubscriptionPlans('year');
+      this.annualPlans = this.mapPlans(response);
     } catch (err) {
       console.error('Failed to load subscription plans', err);
     }
   }
 
-  private mapPlans(response: any): void {
+  private mapPlans(response: any) {
     if (!response) {
       return;
     }
 
-    this.monthlyPlans = response.monthly?.plans ?? [];
-    this.monthlyPlans = this.monthlyPlans.map((plan: any) => {
+    let plans = response ?? [];
+    plans = plans.map((plan: any) => {
       const amount = this.getUsdPrice(plan.prices);
       return {
         ...plan,
-        price: this.formatCurrency(amount)
+        price: this.formatCurrency(amount),
+        usdAmount: amount
       };
     });
 
-    this.annualPlans = response.annually?.plans ?? [];
-    this.annualPlans = this.annualPlans.map((plan: any) => {
-      const amount = this.getUsdPrice(plan.prices);
-      return {
-        ...plan,
-        price: this.formatCurrency(amount)
-      };
-    });
+    return plans.sort((a: any, b: any) => a.usdAmount - b.usdAmount);
   }
 
   private getUsdPrice(prices?: any[]): number {
