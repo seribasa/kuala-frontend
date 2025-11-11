@@ -24,16 +24,16 @@ describe('PricingPlan', () => {
 
   // Extracted helpers
   const buildPlansResponse = (monthly?: RawPlan[], annually?: RawPlan[]): PlansResponse => ({
-    monthly: monthly ? { plans: monthly } : undefined,
-    annually: annually ? { plans: annually } : undefined,
+    monthly: monthly ? {plans: monthly} : undefined,
+    annually: annually ? {plans: annually} : undefined,
   });
 
   const createComponent = async () => {
     await TestBed.configureTestingModule({
       imports: [MatButtonModule, PricingPlan],
       providers: [
-        { provide: PricingPlanService, useValue: mockPricingPlanService },
-        { provide: Router, useValue: mockRouter },
+        {provide: PricingPlanService, useValue: mockPricingPlanService},
+        {provide: Router, useValue: mockRouter},
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(PricingPlan);
@@ -58,8 +58,8 @@ describe('PricingPlan', () => {
 
   it('should initialize and load subscription plans on init', fakeAsync(() => {
     const mockResponse = buildPlansResponse(
-      [{ prices: [{ currency: 'USD', amount: 10 }] }],
-      [{ prices: [{ currency: 'USD', amount: 100 }] }],
+      [{prices: [{currency: 'USD', amount: 10}]}],
+      [{prices: [{currency: 'USD', amount: 100}]}],
     );
     mockPricingPlanService.listSubscriptionPlans.and.returnValue(Promise.resolve(mockResponse));
     component.ngOnInit();
@@ -72,24 +72,32 @@ describe('PricingPlan', () => {
     spyOn(console, 'error');
     component.ngOnInit();
     tick(); // let catch run
-    expect(console.error).toHaveBeenCalledWith('Failed to load subscription plans', 'Error');
+    expect(console.error).toHaveBeenCalledWith('Failed to load month subscription plans', 'Error');
+    expect(console.error).toHaveBeenCalledWith('Failed to load year subscription plans', 'Error');
+    expect(console.error).toHaveBeenCalledTimes(2);
   }));
 
   it('should switch billing cycle and return correct displayed plans', () => {
     component.billingCycle = 'monthly';
-    component.monthlyPlans = [{ name: 'Basic Plan', price: '$10' } as any];
-    component.annualPlans = [{ name: 'Premium Plan', price: '$100' } as any];
-    expect(component.displayedPlans()).toEqual([{ name: 'Basic Plan', price: '$10' }]);
+    component.monthlyPlans = [{name: 'Basic Plan', price: '$10'} as any];
+    component.annualPlans = [{name: 'Premium Plan', price: '$100'} as any];
+    expect(component.displayedPlans()).toEqual([{name: 'Basic Plan', price: '$10'}]);
     // Use the correct union value used across component: 'yearly' switches to annual plans
     component.setBillingCycle('yearly');
-    expect(component.displayedPlans()).toEqual([{ name: 'Premium Plan', price: '$100' }]);
+    expect(component.displayedPlans()).toEqual([{name: 'Premium Plan', price: '$100'}]);
   });
 
   it('should format plans with USD prices correctly', fakeAsync(() => {
-    const mockResponse = buildPlansResponse([{ prices: [{ currency: 'USD', amount: 20 }] }], undefined);
+    const mockResponse = [{prices: [{currency: 'USD', amount: 20}]}];
     mockPricingPlanService.listSubscriptionPlans.and.returnValue(Promise.resolve(mockResponse));
-    component.loadSubscriptionPlans();
+    component.loadSubscriptionPlans('month').then(result => {
+      component.monthlyPlans = result;
+    });
     tick(); // resolve promise and mapping
-    expect(component.monthlyPlans).toEqual([{ prices: [{ currency: 'USD', amount: 20 }], price: '$20' } as any]);
+    expect(component.monthlyPlans).toEqual([{
+      prices: [{currency: 'USD', amount: 20}],
+      price: '$20',
+      usdAmount: 20
+    } as any]);
   }));
 });

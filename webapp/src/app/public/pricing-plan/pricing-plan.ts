@@ -34,7 +34,8 @@ export class PricingPlan implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loadAllSubscriptionPlans();
+    this.monthlyPlans = await this.loadSubscriptionPlans('month');
+    this.annualPlans = await this.loadSubscriptionPlans('year');
   }
 
   async login() {
@@ -42,25 +43,19 @@ export class PricingPlan implements OnInit {
     await this.authService.initiateLogin(redirectTo);
   }
 
-  async loadAllSubscriptionPlans() {
+  async loadSubscriptionPlans(interval: string) {
     try {
-      const response = await this.pricingPlanService.listSubscriptionPlans('month');
-      this.monthlyPlans = this.mapPlans(response);
+      const response = await this.pricingPlanService.listSubscriptionPlans(interval);
+      return this.mapPlans(response);
     } catch (err) {
-      console.error('Failed to load subscription plans', err);
-    }
-
-    try {
-      const response = await this.pricingPlanService.listSubscriptionPlans('year');
-      this.annualPlans = this.mapPlans(response);
-    } catch (err) {
-      console.error('Failed to load subscription plans', err);
+      console.error(`Failed to load ${interval} subscription plans`, err);
+      return [];
     }
   }
 
   private mapPlans(response: any) {
     if (!response) {
-      return;
+      return [];
     }
 
     let plans = response ?? [];
