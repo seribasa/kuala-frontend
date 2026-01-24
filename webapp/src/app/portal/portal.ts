@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
 
 @Component({
@@ -15,7 +15,6 @@ import {AuthService} from '../auth/auth.service';
 export class Portal implements OnInit {
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
               private authService: AuthService) {
   }
 

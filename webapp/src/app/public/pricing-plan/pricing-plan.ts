@@ -39,8 +39,9 @@ export class PricingPlan implements OnInit {
   }
 
   async login(id: string) {
-    const redirectTo = window.location.origin + '/portal/dashboard?subscriptionId=' + id;
-    await this.authService.initiateLogin(redirectTo);
+    const url = new URL('/portal/dashboard', window.location.origin);
+    url.searchParams.set('subscriptionId', id);
+    await this.authService.initiateLogin(url.toString());
   }
 
   async loadSubscriptionPlans(interval: string) {
