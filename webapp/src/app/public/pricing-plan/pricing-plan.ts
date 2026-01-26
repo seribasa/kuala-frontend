@@ -38,9 +38,10 @@ export class PricingPlan implements OnInit {
     this.annualPlans = await this.loadSubscriptionPlans('year');
   }
 
-  async login() {
-    const redirectTo = window.location.origin + '/portal';
-    await this.authService.initiateLogin(redirectTo);
+  async login(id: string) {
+    const url = new URL('/portal/dashboard', window.location.origin);
+    url.searchParams.set('subscriptionId', id);
+    await this.authService.initiateLogin(url.toString());
   }
 
   async loadSubscriptionPlans(interval: string) {

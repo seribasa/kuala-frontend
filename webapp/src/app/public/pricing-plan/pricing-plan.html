@@ -40,7 +40,7 @@
           </ul>
         </div>
         @if (plan.selectable) {
-          <button (click)="login()" mat-raised-button color="primary" class="mt-6 w-full">Select Plan</button>
+          <button (click)="login(plan.id)" mat-raised-button color="primary" class="mt-6 w-full">Select Plan</button>
         } @else {
           <button mat-raised-button color="primary" class="mt-6 w-full">Contact Us</button>
         }

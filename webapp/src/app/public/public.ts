@@ -30,7 +30,7 @@ export class Public {
   }
 
   async login() {
-    const redirectTo = window.location.origin + '/portal';
+    const redirectTo = window.location.origin + '/portal/';
     await this.authService.initiateLogin(redirectTo);
   }
 
