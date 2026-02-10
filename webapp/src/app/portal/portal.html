@@ -15,21 +15,21 @@
               </a>
             </li>
             <li class="mb-2">
-              <a [routerLink]="['patient']" routerLinkActive="bg-red-400 text-white"
+              <a [routerLink]="['subscriptions']" routerLinkActive="bg-red-400 text-white"
                  class="flex items-center px-4 py-2 rounded-lg"
-                 [class.text-gray-600]="!isActive('patient')"
-                 [class.hover:bg-gray-100]="!isActive('patient')">
-                <span class="material-icons">people_alt</span>
-                <span class="ml-3">Patient</span>
+                 [class.text-gray-600]="!isActive('subscriptions')"
+                 [class.hover:bg-gray-100]="!isActive('subscriptions')">
+                <span class="material-icons">workspace_premium</span>
+                <span class="ml-3">Subscriptions</span>
               </a>
             </li>
             <li class="mb-2">
-              <a [routerLink]="['appointment']" routerLinkActive="bg-red-400 text-white"
+              <a [routerLink]="['invoice']" routerLinkActive="bg-red-400 text-white"
                  class="flex items-center px-4 py-2 rounded-lg"
-                 [class.text-gray-600]="!isActive('appointment')"
-                 [class.hover:bg-gray-100]="!isActive('appointment')">
-                <span class="material-icons">calendar_today</span>
-                <span class="ml-3">Appointment</span>
+                 [class.text-gray-600]="!isActive('invoice')"
+                 [class.hover:bg-gray-100]="!isActive('invoice')">
+                <span class="material-icons">receipt_long</span>
+                <span class="ml-3">Invoice</span>
               </a>
             </li>
             <li class="mb-2">
@@ -42,17 +42,8 @@
               </a>
             </li>
             <li class="mb-2">
-              <a [routerLink]="['billing']" routerLinkActive="bg-red-400 text-white"
-                 class="flex items-center px-4 py-2 rounded-lg"
-                 [class.text-gray-600]="!isActive('billing')"
-                 [class.hover:bg-gray-100]="!isActive('billing')">
-                <span class="material-icons">receipt_long</span>
-                <span class="ml-3">Billing</span>
-              </a>
-            </li>
-            <li class="mb-2">
               <a (click)="logout()" routerLinkActive="bg-red-400 text-white"
-                 class="flex items-center px-4 py-2 rounded-lg">
+                 class="flex items-center px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-100">
                 <span class="material-icons">logout</span>
                 <span class="ml-3">Logout</span>
               </a>
@@ -64,13 +55,13 @@
         <nav>
           <ul>
             <li class="mb-2">
-              <a class="text-sm text-gray-600 hover:text-gray-900" href="#">About Us</a>
+              <a [routerLink]="['about']" class="text-sm text-gray-600 hover:text-gray-900">About Us</a>
             </li>
             <li class="mb-2">
-              <a class="text-sm text-gray-600 hover:text-gray-900" href="#">Help</a>
+              <a [routerLink]="['help']" class="text-sm text-gray-600 hover:text-gray-900">Help</a>
             </li>
             <li>
-              <a class="text-sm text-gray-600 hover:text-gray-900" href="#">Contact</a>
+              <a [routerLink]="['contact']" class="text-sm text-gray-600 hover:text-gray-900">Contact</a>
             </li>
           </ul>
         </nav>

@@ -1,6 +1,5 @@
 import {Routes} from '@angular/router';
 import {authGuard} from './auth/auth.guard';
-import {Patient} from './portal/patient/patient';
 import {Public} from './public/public';
 import {PricingPlan} from './public/pricing-plan/pricing-plan';
 import {About} from './public/about/about';
@@ -8,9 +7,9 @@ import {Portal} from './portal/portal';
 import {Dashboard} from './portal/dashboard/dashboard';
 import {Contact} from './public/contact/contact';
 import {Help} from './public/help/help';
-import {Appointment} from './portal/appointment/appointment';
 import {Profile} from './portal/profile/profile';
-import {Billing} from './portal/billing/billing';
+import {Subscriptions} from './portal/subscriptions/subscriptions';
+import {Invoice} from './portal/invoice/invoice';
 
 export const routes: Routes = [
   {
@@ -30,10 +29,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {path: 'dashboard', component: Dashboard},
-      {path: 'patient', component: Patient},
-      {path: 'appointment', component: Appointment},
+      {path: 'subscriptions', component: Subscriptions},
+      {path: 'invoice', component: Invoice},
       {path: 'profile', component: Profile},
-      {path: 'billing', component: Billing},
+      {path: 'about', component: About},
+      {path: 'contact', component: Contact},
+      {path: 'help', component: Help},
       {path: '', pathMatch: 'full', redirectTo: 'dashboard'}
     ]
   },
