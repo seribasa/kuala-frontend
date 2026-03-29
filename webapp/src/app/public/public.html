@@ -1,30 +1,17 @@
 <div class="min-h-screen bg-white flex flex-col">
-  <mat-toolbar color="primary" class="!bg-white !text-gray-900 border-b shadow-sm">
-    <div class="w-full max-w-7xl mx-auto flex items-center justify-between">
-      <a [routerLink]="['/']" mat-button class="!p-0">
-        <span class="flex items-center space-x-2">
-          <mat-icon fontIcon="star"></mat-icon>
-          <span class="font-semibold text-lg">Kuala</span>
-        </span>
+  <mat-toolbar class="!bg-white !text-gray-900 !shadow-none !border-b !border-gray-200 sticky top-0 z-10">
+    <div class="w-full max-w-7xl mx-auto flex items-center justify-between px-4">
+      <a [routerLink]="['/']" class="no-underline text-inherit">
+        <span class="font-bold text-lg tracking-wide">KUALA</span>
       </a>
 
-      <nav class="hidden md:flex items-center space-x-2">
-        <a [routerLink]="['about']" routerLinkActive="bg-red-400 text-white" mat-button
-           [class.text-gray-600]="!isActive('about')"
-           [class.hover:bg-gray-100]="!isActive('about')">
-          About Us
-        </a>
-        <a [routerLink]="['help']" routerLinkActive="bg-red-400 text-white" mat-button
-           [class.text-gray-600]="!isActive('about')"
-           [class.hover:bg-gray-100]="!isActive('about')">
-          Help
-        </a>
-        <a [routerLink]="['contact']" routerLinkActive="bg-red-400 text-white" mat-button
-           [class.text-gray-600]="!isActive('about')"
-           [class.hover:bg-gray-100]="!isActive('about')">
-          Contact
-        </a>
-        <a matButton="tonal" (click)="login()">Login</a>
+      <nav class="hidden md:flex items-center space-x-1">
+        <a [routerLink]="['about']" mat-button class="!text-gray-700 !text-sm">About</a>
+        <a [routerLink]="['help']" mat-button class="!text-gray-700 !text-sm">Help</a>
+        <a [routerLink]="['contact']" mat-button class="!text-gray-700 !text-sm">Contact</a>
+        <button mat-stroked-button (click)="login()" class="!ml-3 !border-gray-900 !text-gray-900 !text-sm !font-medium !px-5">
+          LOGIN
+        </button>
       </nav>
 
       <button mat-icon-button class="md:!hidden" aria-label="Open menu">
@@ -33,11 +20,17 @@
     </div>
   </mat-toolbar>
 
-  <main class="flex-grow flex items-center justify-center">
+  <main class="flex-grow">
     <router-outlet></router-outlet>
   </main>
 
-  <footer class="text-xs text-gray-500 py-4 text-center">
-    © 2025 Seri Basa Digital
+  <footer class="bg-gray-100 border-t border-gray-200 py-5 px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <span class="text-xs tracking-widest uppercase text-gray-500 font-medium">Seri Basa Digital</span>
+      <div class="flex items-center gap-6">
+        <a href="#" class="text-xs tracking-widest uppercase text-gray-500 hover:text-gray-800 no-underline font-medium">Privacy Policy</a>
+        <a href="#" class="text-xs tracking-widest uppercase text-gray-500 hover:text-gray-800 no-underline font-medium">Terms of Service</a>
+      </div>
+    </div>
   </footer>
 </div>

@@ -2,9 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PricingPlanService} from './pricing-plan.service';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {FormsModule} from '@angular/forms';
-import {MatButton} from '@angular/material/button';
-import {MatCard, MatCardContent, MatCardImage} from '@angular/material/card';
-import {NgOptimizedImage} from '@angular/common';
+import {MatAnchor, MatButton} from '@angular/material/button';
 import {AuthService} from '../../auth/auth.service';
 
 @Component({
@@ -14,10 +12,7 @@ import {AuthService} from '../../auth/auth.service';
     MatButtonToggle,
     FormsModule,
     MatButton,
-    MatCard,
-    MatCardImage,
-    MatCardContent,
-    NgOptimizedImage
+    MatAnchor,
   ],
   templateUrl: './pricing-plan.html',
   styleUrl: './pricing-plan.css'

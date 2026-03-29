@@ -1,50 +1,68 @@
-<div class="flex flex-col items-center p-6">
-  <mat-card appearance="outlined" class="w-full rounded-2xl bg-red-200/50 p-8 text-center">
-    <img mat-card-image alt="logo SBD" class="mx-auto"
-         ngSrc="/assets/images/logo-SBD-removebg.png" height="408" width="612"/>
-    <mat-card-content>
-      <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
-        Grow your digital medical practice with Kuala
-      </h1>
-      <p class="text-gray-700 mt-2">
-        Manage appointments, patients, and services effortlessly in one platform
-      </p>
-    </mat-card-content>
-  </mat-card>
-
-  <div class="text-center my-6">
-    <h3 class="text-3xl font-bold">Choose Your Plan Before Registering an Account</h3>
+<!-- Hero Section -->
+<section class="w-full bg-white py-24 text-center">
+  <div class="max-w-2xl mx-auto px-6">
+    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-5">
+      Grow your digital medical practice with Kuala
+    </h1>
+    <p class="text-gray-500 text-base mb-10">
+      Manage appointments, patients, and billing in one unified platform.
+    </p>
+    <a mat-stroked-button href="#pricing"
+       class="!border-gray-900 !text-gray-900 !font-semibold !tracking-widest uppercase !px-10 !py-3">
+      View Pricing
+    </a>
   </div>
+</section>
 
-  <div class="flex justify-center mt-6">
-    <mat-button-toggle-group
-      [value]="billingCycle"
-      (change)="setBillingCycle($event.value)"
-      class="rounded-full border overflow-hidden">
-      <mat-button-toggle value="monthly" class="px-6">Monthly</mat-button-toggle>
-      <mat-button-toggle value="yearly" class="px-6">Yearly</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
+<!-- Pricing Section -->
+<section id="pricing" class="w-full bg-gray-100 py-16">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-xl font-bold text-center tracking-widest uppercase text-gray-900 mb-10">
+      Choose Your Plan Before Registering
+    </h2>
 
-  <!-- Pricing Plans -->
-  <div class="grid gap-6 mt-8 md:grid-cols-4 w-full max-w-6xl">
-    @for (plan of displayedPlans(); track plan.id) {
-      <mat-card class="flex flex-col justify-between rounded-2xl shadow p-6 hover:shadow-xl transition">
-        <div>
-          <h2 class="text-xl font-bold">{{ plan.name }}</h2>
-          <p class="text-2xl font-extrabold mt-2">{{ plan.price }}<span class="text-sm"> /{{ billingCycle === 'monthly' ? 'month' : billingCycle === 'yearly' ? 'year' : billingCycle }}</span></p>
-          <ul class="mt-4 space-y-2 text-sm text-gray-700">
-            @for (feature of plan.features; track feature) {
-              <li>✔ {{ feature }}</li>
+    <!-- Billing Cycle Toggle -->
+    <div class="flex justify-center mb-10">
+      <mat-button-toggle-group
+        [value]="billingCycle"
+        (change)="setBillingCycle($event.value)"
+        class="!rounded-full !overflow-hidden !border !border-gray-300 !shadow-none">
+        <mat-button-toggle value="monthly" class="!text-sm !px-6">Monthly</mat-button-toggle>
+        <mat-button-toggle value="yearly" class="!text-sm !px-6">Yearly</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <!-- Plan Cards -->
+    <div class="grid gap-5 md:grid-cols-4">
+      @for (plan of displayedPlans(); track plan.id) {
+        <div class="bg-white rounded-lg border border-gray-200 p-6 flex flex-col">
+          <div class="flex-grow">
+            <h3 class="text-xs font-bold tracking-widest uppercase text-gray-600 mb-3">{{ plan.name }}</h3>
+
+            @if (plan.selectable) {
+              <p class="mb-1">
+                <span class="text-4xl font-bold text-gray-900">{{ plan.price }}</span>
+                <span class="text-sm text-gray-500 ml-1">/ {{ billingCycle === 'monthly' ? 'month' : 'year' }}</span>
+              </p>
+            } @else {
+              <p class="text-3xl font-bold text-gray-900 mb-1">Contact us</p>
             }
-          </ul>
+
+            <button
+              mat-flat-button
+              (click)="plan.selectable && login(plan.id)"
+              class="!w-full !mt-4 !mb-6 !bg-gray-900 !text-white !text-xs !font-bold !tracking-widest uppercase !rounded-sm">
+              {{ plan.selectable ? 'Select Plan' : 'Contact Us' }}
+            </button>
+
+            <ul class="space-y-2 text-sm text-gray-600">
+              @for (feature of plan.features; track feature) {
+                <li>{{ feature }}</li>
+              }
+            </ul>
+          </div>
         </div>
-        @if (plan.selectable) {
-          <button (click)="login(plan.id)" mat-raised-button color="primary" class="mt-6 w-full">Select Plan</button>
-        } @else {
-          <button mat-raised-button color="primary" class="mt-6 w-full">Contact Us</button>
-        }
-      </mat-card>
-    }
+      }
+    </div>
   </div>
-</div>
+</section>
