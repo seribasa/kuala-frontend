@@ -4,6 +4,7 @@ import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-to
 import {FormsModule} from '@angular/forms';
 import {MatAnchor, MatButton} from '@angular/material/button';
 import {AuthService} from '../../auth/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-pricing-plan',
@@ -25,7 +26,8 @@ export class PricingPlan implements OnInit {
   billingCycle: string = 'monthly';
 
   constructor(private pricingPlanService: PricingPlanService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              private router: Router) {
   }
 
   async ngOnInit() {
@@ -81,6 +83,14 @@ export class PricingPlan implements OnInit {
 
   setBillingCycle(cycle: 'monthly' | 'yearly') {
     this.billingCycle = cycle;
+  }
+
+  async contactUs() {
+    try {
+      await this.router.navigate(['/contact']);
+    } catch (err) {
+      console.error('Navigation to contact page failed', err);
+    }
   }
 
 }
