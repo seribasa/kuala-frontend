@@ -1,5 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
+/* Lo-fi design: override Tailwind's default accent/primary colors */
+@theme {
+  --color-primary: #1a1a1a;
+  --color-primary-foreground: #ffffff;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Angular Material global lo-fi overrides */
+.mat-mdc-button.mat-primary,
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-flat-button.mat-primary {
+  --mdc-filled-button-container-color: #1a1a1a;
+  --mdc-filled-button-label-text-color: #ffffff;
+}
+
+.mat-mdc-outlined-button.mat-primary {
+  --mdc-outlined-button-label-text-color: #1a1a1a;
+  --mdc-outlined-button-outline-color: #1a1a1a;
+}
+
+.mat-mdc-button-toggle-group {
+  --mat-button-toggle-selected-state-background-color: #1a1a1a;
+  --mat-button-toggle-selected-state-text-color: #ffffff;
+}
