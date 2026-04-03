@@ -1,11 +1,11 @@
 export function mapPlans(response: any[]): any[] {
-  if (!response) {
+  if (!Array.isArray(response)) {
     return [];
   }
 
-  const plans = (response as any[]).map((plan: any) => {
+  const plans = response.map((plan: any) => {
     const amount = getUsdPrice(plan.prices);
-    return {...plan, price: formatCurrency(amount), usdAmount: amount};
+    return { ...plan, price: formatCurrency(amount), usdAmount: amount };
   });
 
   return plans.sort((a: any, b: any) => a.usdAmount - b.usdAmount);

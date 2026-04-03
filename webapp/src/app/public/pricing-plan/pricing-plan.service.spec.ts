@@ -33,7 +33,7 @@ describe('PricingPlanService', () => {
       {id: 2, name: 'Plan B', price: 20},
     ];
 
-    pricingPlanService.listSubscriptionPlans().then((plans) => {
+    pricingPlanService.listSubscriptionPlans().then((plans: any) => {
       expect(plans).toEqual(mockPlans);
       done();
     });
