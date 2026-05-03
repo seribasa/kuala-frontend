@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # -------- Runtime stage --------
-FROM nginx:1.27-alpine
+FROM nginx:1.30-alpine
 
 # Copy the built Angular artifacts to NGINX html directory
 COPY --from=build /app/dist/webapp/browser /usr/share/nginx/html
