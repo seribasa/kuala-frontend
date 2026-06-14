@@ -8,7 +8,7 @@ export class SubscriptionsService {
   }
 
   getSubscription(): any {
-    return this.apiService.get('/subscription');
+    return this.apiService.get('/subscriptions');
   }
 
   listPlans(interval?: string): any {

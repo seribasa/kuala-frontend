@@ -10,11 +10,6 @@ import {DashboardService} from './dashboard.service';
 })
 export class Dashboard implements OnInit {
 
-  // Example bindings (could later be fetched from API)
-  appointment = "10:00 AM with Emily Carter";
-  revenue = 2500;
-  satisfactionRate = 85;
-
   constructor(private route: ActivatedRoute,
               private dashboardService: DashboardService) {
   }
