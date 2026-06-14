@@ -46,7 +46,7 @@ export class Subscriptions implements OnInit {
     try {
       const subscriptions = await this.subscriptionsService.getSubscription();
       console.log(subscriptions);
-      if (subscriptions.length > 0) {
+      if (subscriptions?.length > 0) {
         console.log(subscriptions[0]);
         return subscriptions[0];
       }
