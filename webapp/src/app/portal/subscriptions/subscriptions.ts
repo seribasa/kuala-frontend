@@ -43,26 +43,16 @@ export class Subscriptions implements OnInit {
   }
 
   async getSubscription() {
-    // TODO: fetch subscription details from API
-    // await this.subscriptionsService.getSubscription();
-
-    const subscription = {
-      name: 'Basic',
-      status: 'Active',
-      price: '$49.99',
-      billingCycle: 'month',
-      nextBillingDate: '30 June 2026',
-      features: [
-        'Generic Apps',
-        'Patient Appointment',
-        'Clinic Virtual Assistant',
-        'Published Apps',
-        'Landing Page',
-        'Event Management'
-      ]
-    };
-
-    return subscription;
+    try {
+      const subscriptions = await this.subscriptionsService.getSubscription();
+      console.log(subscriptions);
+      if (subscriptions.length > 0) {
+        console.log(subscriptions[0]);
+        return subscriptions[0];
+      }
+    } catch (err) {
+      console.error('Failed to fetch subscription', err);
+    }
   }
 
   displayedPlans() {
