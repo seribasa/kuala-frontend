@@ -4,20 +4,20 @@
 <div class="bg-gray-100 border border-gray-200 rounded-lg p-8 mb-6 flex">
   <div class="flex-1 pr-8">
     <p class="text-sm text-gray-500 mb-1">Current Plan</p>
-    <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ subscription?.name }}</h2>
+    <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ subscription?.productName }}</h2>
     <div class="grid grid-cols-2 gap-x-8 mb-4">
       <div>
         <p class="text-sm text-gray-500">Status</p>
-        <p class="font-bold">{{ subscription?.status }}</p>
+        <p class="font-bold">{{ subscription?.state }}</p>
       </div>
       <div>
         <p class="text-sm text-gray-500">Price</p>
-        <p class="font-bold">{{ subscription?.price }} /{{ subscription?.billingCycle }}</p>
+        <p class="font-bold">{{ subscription?.price }} /{{ subscription?.billingPeriod }}</p>
       </div>
     </div>
     <div>
       <p class="text-sm text-gray-500">Next Billing Date</p>
-      <p class="font-bold">{{ subscription?.nextBillingDate }}</p>
+      <p class="font-bold">{{ subscription?.chargedThroughDate }}</p>
     </div>
   </div>
 
