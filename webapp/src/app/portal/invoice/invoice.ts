@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {MatButton} from '@angular/material/button';
+import {PageHeader} from '../../shared/page-header';
 
 interface InvoiceItem {
   id: string;
@@ -10,9 +12,8 @@ interface InvoiceItem {
 
 @Component({
   selector: 'app-invoice',
-  imports: [],
+  imports: [MatButton, PageHeader],
   templateUrl: './invoice.html',
-  styleUrl: './invoice.css'
 })
 export class Invoice implements OnInit {
 

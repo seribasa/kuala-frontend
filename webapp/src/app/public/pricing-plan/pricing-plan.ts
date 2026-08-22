@@ -25,15 +25,19 @@ export class PricingPlan implements OnInit {
   annualPlans: any[] = [];
 
   billingCycle: string = 'monthly';
+  errorMessage = '';
 
   constructor(private pricingPlanService: PricingPlanService,
               public authService: AuthService,
               private router: Router) {
   }
 
-  async ngOnInit() {
-    this.monthlyPlans = await this.loadSubscriptionPlans('month');
-    this.annualPlans = await this.loadSubscriptionPlans('year');
+  async ngOnInit(): Promise<void> {
+    try {
+      [this.monthlyPlans, this.annualPlans] = await Promise.all([this.loadSubscriptionPlans('month'), this.loadSubscriptionPlans('year')]);
+    } catch {
+      this.errorMessage = 'Plans are temporarily unavailable. Please try again later.';
+    }
   }
 
   async login(id: string) {

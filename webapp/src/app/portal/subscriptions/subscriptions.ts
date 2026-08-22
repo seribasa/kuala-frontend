@@ -4,12 +4,12 @@ import {mapPlans} from '../../shared/plan-utils';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
+import {PageHeader} from '../../shared/page-header';
 
 @Component({
   selector: 'app-subscriptions',
-  imports: [MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon],
+  imports: [MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, PageHeader],
   templateUrl: './subscriptions.html',
-  styleUrl: './subscriptions.css'
 })
 export class Subscriptions implements OnInit {
 
@@ -19,17 +19,20 @@ export class Subscriptions implements OnInit {
   monthlyPlans: any[] = [];
   annualPlans: any[] = [];
   allFeatures: string[] = [];
+  errorMessage = '';
 
   private readonly planLevels = ['Free', 'Basic', 'Premium', 'Enterprise'];
 
   constructor(private subscriptionsService: SubscriptionsService) {
   }
 
-  async ngOnInit() {
-    this.monthlyPlans = await this.loadPlans('month');
-    this.annualPlans = await this.loadPlans('year');
-    this.subscription = await this.getSubscription();
-    this.allFeatures = this.extractAllFeatures();
+  async ngOnInit(): Promise<void> {
+    try {
+      [this.monthlyPlans, this.annualPlans, this.subscription] = await Promise.all([this.loadPlans('month'), this.loadPlans('year'), this.getSubscription()]);
+      this.allFeatures = this.extractAllFeatures();
+    } catch {
+      this.errorMessage = 'We could not load subscription details. Please try again.';
+    }
   }
 
   async loadPlans(interval: string) {
@@ -45,12 +48,13 @@ export class Subscriptions implements OnInit {
   async getSubscription() {
     try {
       const results = await this.subscriptionsService.getSubscription();
-      if (results?.subscriptions.length > 0) {
-        return results.subscriptions[0];
+      if ((results?.subscriptions?.length ?? 0) > 0) {
+        return results?.subscriptions?.[0] ?? null;
       }
     } catch (err) {
       console.error('Failed to fetch subscription', err);
     }
+    return null;
   }
 
   displayedPlans() {
@@ -78,6 +82,6 @@ export class Subscriptions implements OnInit {
   }
 
   planHasFeature(plan: any, feature: string): boolean {
-    return (plan.features ?? []).includes(feature);
+    return plan.features.includes(feature);
   }
 }
