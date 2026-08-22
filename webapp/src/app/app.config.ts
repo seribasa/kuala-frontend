@@ -12,10 +12,10 @@ import {provideHttpClient} from '@angular/common/http';
 import {API_BASE_URL} from './api/ApiService';
 import {AuthService} from './auth/auth.service';
 
-const apiBaseUrl =
-  (typeof window !== 'undefined' && (window as any).__env && (window as any).__env.API_BASE_URL)
-    ? (window as any).__env.API_BASE_URL
-    : 'https://kuala-api-staging.seribasa.digital/v1/kuala';
+interface RuntimeEnvironment { API_BASE_URL?: string }
+interface RuntimeWindow extends Window { __env?: RuntimeEnvironment }
+const runtimeEnvironment = typeof window !== 'undefined' ? (window as RuntimeWindow).__env : undefined;
+const apiBaseUrl = runtimeEnvironment?.API_BASE_URL ?? 'https://kuala-api-staging.seribasa.digital/v1/kuala';
 
 export const appConfig: ApplicationConfig = {
   providers: [

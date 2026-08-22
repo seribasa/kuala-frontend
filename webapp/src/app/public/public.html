@@ -14,11 +14,21 @@
         </button>
       </nav>
 
-      <button mat-icon-button class="md:!hidden" aria-label="Open menu">
+      <button mat-icon-button class="md:!hidden" [attr.aria-expanded]="menuOpen" aria-controls="mobile-navigation" aria-label="Open menu" (click)="toggleMenu()">
         <mat-icon fontIcon="menu"></mat-icon>
       </button>
     </div>
   </mat-toolbar>
+  @if (menuOpen) {
+    <nav id="mobile-navigation" class="border-b border-gray-200 bg-white p-4 md:hidden" aria-label="Mobile navigation">
+      <div class="mx-auto flex max-w-7xl flex-col gap-1">
+        <a mat-button [routerLink]="['about']" (click)="toggleMenu()">About</a>
+        <a mat-button [routerLink]="['help']" (click)="toggleMenu()">Help</a>
+        <a mat-button [routerLink]="['contact']" (click)="toggleMenu()">Contact</a>
+        <button mat-stroked-button type="button" (click)="login()">Login</button>
+      </div>
+    </nav>
+  }
 
   <main class="flex-grow">
     <router-outlet></router-outlet>

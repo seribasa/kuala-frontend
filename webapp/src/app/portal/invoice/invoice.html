@@ -1,5 +1,5 @@
-<div class="invoice-page">
-  <h1 class="text-2xl font-bold mb-6">Invoice</h1>
+<div class="mx-auto w-full">
+  <app-page-header title="Invoice" description="View, download, and manage payments for your invoices."/>
 
   <div class="overflow-x-auto border border-gray-200 rounded-lg">
     <table class="w-full min-w-[900px] text-sm">
@@ -24,10 +24,10 @@
             <td class="p-4">
               <div class="flex gap-4">
                 @if (invoice.status === 'Unpaid') {
-                  <button matButton="filled" class="invoice-action" (click)="payInvoice(invoice)">Pay</button>
+                  <button mat-flat-button type="button" (click)="payInvoice(invoice)">Pay</button>
                 }
-                <button matButton="filled" class="invoice-action" (click)="viewInvoice(invoice)">View</button>
-                <button matButton="filled" class="invoice-action" (click)="savePdf(invoice)">Save PDF</button>
+                <button mat-stroked-button type="button" (click)="viewInvoice(invoice)">View</button>
+                <button mat-stroked-button type="button" (click)="savePdf(invoice)">Save PDF</button>
               </div>
             </td>
           </tr>

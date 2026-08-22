@@ -19,18 +19,17 @@ import {MatIcon} from '@angular/material/icon';
   styleUrl: './public.css'
 })
 export class Public {
+  menuOpen = false;
 
   constructor(private router: Router,
               public authService: AuthService) {
   }
 
-  isActive(route: string): boolean {
-    return this.router.url.includes(route);
-  }
-
-  async login() {
+  async login(): Promise<void> {
     const redirectTo = window.location.origin + '/portal/';
     await this.authService.initiateLogin(redirectTo);
   }
+
+  toggleMenu(): void { this.menuOpen = !this.menuOpen; }
 
 }
