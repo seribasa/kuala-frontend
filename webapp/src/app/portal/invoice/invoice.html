@@ -1,1 +1,52 @@
-<p>invoice works!</p>
+<div class="invoice-page">
+  <h1 class="text-2xl font-bold mb-6">Invoice</h1>
+
+  <div class="overflow-x-auto border border-gray-200 rounded-lg">
+    <table class="w-full min-w-[900px] text-sm">
+      <thead>
+        <tr class="bg-gray-100 border-b border-gray-200">
+          <th class="text-left p-4 font-semibold text-gray-700">Invoice ID</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Plan</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Amount</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Invoice Date</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Status</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (invoice of invoices; track invoice.id) {
+          <tr class="border-b border-gray-200 last:border-b-0">
+            <td class="p-4 text-gray-600">{{ invoice.id }}</td>
+            <td class="p-4 text-gray-600">{{ invoice.plan }}</td>
+            <td class="p-4 text-gray-600">{{ invoice.amount }}</td>
+            <td class="p-4 text-gray-600">{{ invoice.invoiceDate }}</td>
+            <td class="p-4 text-gray-600">{{ invoice.status }}</td>
+            <td class="p-4">
+              <div class="flex gap-4">
+                @if (invoice.status === 'Unpaid') {
+                  <button matButton="filled" class="invoice-action" (click)="payInvoice(invoice)">Pay</button>
+                }
+                <button matButton="filled" class="invoice-action" (click)="viewInvoice(invoice)">View</button>
+                <button matButton="filled" class="invoice-action" (click)="savePdf(invoice)">Save PDF</button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="p-8 text-center text-gray-500">No invoices found.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center justify-between mt-6">
+    <button matButton="filled" class="invoice-page-button" [disabled]="currentPage === 1" (click)="previousPage()">
+      Previous
+    </button>
+    <span class="text-sm text-gray-500">Page {{ currentPage }} of {{ totalPages }}</span>
+    <button matButton="filled" class="invoice-page-button" [disabled]="currentPage === totalPages" (click)="nextPage()">
+      Next
+    </button>
+  </div>
+</div>

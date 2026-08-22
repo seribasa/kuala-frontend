@@ -44,11 +44,9 @@ export class Subscriptions implements OnInit {
 
   async getSubscription() {
     try {
-      const subscriptions = await this.subscriptionsService.getSubscription();
-      console.log(subscriptions);
-      if (subscriptions?.length > 0) {
-        console.log(subscriptions[0]);
-        return subscriptions[0];
+      const results = await this.subscriptionsService.getSubscription();
+      if (results?.subscriptions.length > 0) {
+        return results.subscriptions[0];
       }
     } catch (err) {
       console.error('Failed to fetch subscription', err);
