@@ -1,51 +1,88 @@
 <div class="mx-auto w-full">
   <app-page-header title="Invoice" description="View, download, and manage payments for your invoices."/>
 
+  <form class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center" (ngSubmit)="searchInvoices()">
+    <label class="sr-only" for="invoice-search">Search invoices</label>
+    <input
+      id="invoice-search"
+      name="invoice-search"
+      class="w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 sm:max-w-sm"
+      type="search"
+      placeholder="Search invoices"
+      [(ngModel)]="searchKey"
+    />
+    <button mat-flat-button type="submit" [disabled]="isLoading">Search</button>
+  </form>
+
+  @if (errorMessage) {
+    <div class="mb-4 rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+      {{ errorMessage }}
+    </div>
+  }
+
   <div class="overflow-x-auto border border-gray-200 rounded-lg">
     <table class="w-full min-w-[900px] text-sm">
       <thead>
         <tr class="bg-gray-100 border-b border-gray-200">
-          <th class="text-left p-4 font-semibold text-gray-700">Invoice ID</th>
-          <th class="text-left p-4 font-semibold text-gray-700">Plan</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Invoice No.</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Description</th>
           <th class="text-left p-4 font-semibold text-gray-700">Amount</th>
           <th class="text-left p-4 font-semibold text-gray-700">Invoice Date</th>
+          <th class="text-left p-4 font-semibold text-gray-700">Due Date</th>
           <th class="text-left p-4 font-semibold text-gray-700">Status</th>
           <th class="text-left p-4 font-semibold text-gray-700">Action</th>
         </tr>
       </thead>
       <tbody>
-        @for (invoice of invoices; track invoice.id) {
-          <tr class="border-b border-gray-200 last:border-b-0">
-            <td class="p-4 text-gray-600">{{ invoice.id }}</td>
-            <td class="p-4 text-gray-600">{{ invoice.plan }}</td>
-            <td class="p-4 text-gray-600">{{ invoice.amount }}</td>
-            <td class="p-4 text-gray-600">{{ invoice.invoiceDate }}</td>
-            <td class="p-4 text-gray-600">{{ invoice.status }}</td>
-            <td class="p-4">
-              <div class="flex gap-4">
-                @if (invoice.status === 'Unpaid') {
-                  <button mat-flat-button type="button" (click)="payInvoice(invoice)">Pay</button>
-                }
-                <button mat-stroked-button type="button" (click)="viewInvoice(invoice)">View</button>
-                <button mat-stroked-button type="button" (click)="savePdf(invoice)">Save PDF</button>
-              </div>
-            </td>
-          </tr>
-        } @empty {
+        @if (isLoading) {
           <tr>
-            <td colspan="6" class="p-8 text-center text-gray-500">No invoices found.</td>
+            <td colspan="7" class="p-8 text-center text-gray-500">Loading invoices...</td>
           </tr>
+        } @else {
+          @for (invoice of invoices; track invoice.id) {
+            <tr class="border-b border-gray-200 last:border-b-0">
+              <td class="p-4 text-gray-600">{{ invoice.number }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.description }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.amount }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.invoiceDate }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.dueDate }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.status }}</td>
+              <td class="p-4">
+                <div class="flex gap-4">
+                  @if (invoice.canPay) {
+                    <button mat-flat-button type="button" (click)="payInvoice(invoice)">Pay</button>
+                  }
+                  <button mat-stroked-button type="button" (click)="viewInvoice(invoice)">View</button>
+                  <button mat-stroked-button type="button" (click)="savePdf(invoice)">Save PDF</button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="7" class="p-8 text-center text-gray-500">No invoices found.</td>
+            </tr>
+          }
         }
       </tbody>
     </table>
   </div>
 
   <div class="flex items-center justify-between mt-6">
-    <button matButton="filled" class="invoice-page-button" [disabled]="currentPage === 1" (click)="previousPage()">
+    <button
+      matButton="filled"
+      class="invoice-page-button"
+      [disabled]="currentPage === 1 || isLoading"
+      (click)="previousPage()"
+    >
       Previous
     </button>
     <span class="text-sm text-gray-500">Page {{ currentPage }} of {{ totalPages }}</span>
-    <button matButton="filled" class="invoice-page-button" [disabled]="currentPage === totalPages" (click)="nextPage()">
+    <button
+      matButton="filled"
+      class="invoice-page-button"
+      [disabled]="currentPage === totalPages || isLoading"
+      (click)="nextPage()"
+    >
       Next
     </button>
   </div>
