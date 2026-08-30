@@ -1,7 +1,7 @@
 <div class="mx-auto w-full">
   <app-page-header title="Invoice" description="View, download, and manage payments for your invoices."/>
 
-  <form class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center" (ngSubmit)="searchInvoices()">
+  <div class="mb-4">
     <label class="sr-only" for="invoice-search">Search invoices</label>
     <input
       id="invoice-search"
@@ -11,8 +11,7 @@
       placeholder="Search invoices"
       [(ngModel)]="searchKey"
     />
-    <button mat-flat-button type="submit" [disabled]="isLoading">Search</button>
-  </form>
+  </div>
 
   @if (errorMessage) {
     <div class="mb-4 rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -34,14 +33,14 @@
         </tr>
       </thead>
       <tbody>
-        @if (isLoading) {
+        @if (isLoading && invoices.length === 0) {
           <tr>
             <td colspan="7" class="p-8 text-center text-gray-500">Loading invoices...</td>
           </tr>
         } @else {
-          @for (invoice of invoices; track invoice.id) {
+          @for (invoice of filteredInvoices; track invoice.id) {
             <tr class="border-b border-gray-200 last:border-b-0">
-              <td class="p-4 text-gray-600">{{ invoice.number }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.invoiceNumber }}</td>
               <td class="p-4 text-gray-600">{{ invoice.description }}</td>
               <td class="p-4 text-gray-600">{{ invoice.amount }}</td>
               <td class="p-4 text-gray-600">{{ invoice.invoiceDate }}</td>
@@ -59,7 +58,9 @@
             </tr>
           } @empty {
             <tr>
-              <td colspan="7" class="p-8 text-center text-gray-500">No invoices found.</td>
+              <td colspan="7" class="p-8 text-center text-gray-500">
+                {{ searchKey.trim() ? 'No invoices match your search.' : 'No invoices found.' }}
+              </td>
             </tr>
           }
         }
@@ -67,23 +68,13 @@
     </table>
   </div>
 
-  <div class="flex items-center justify-between mt-6">
+  <div class="mt-6 flex justify-center">
     <button
       matButton="filled"
       class="invoice-page-button"
-      [disabled]="currentPage === 1 || isLoading"
-      (click)="previousPage()"
-    >
-      Previous
-    </button>
-    <span class="text-sm text-gray-500">Page {{ currentPage }} of {{ totalPages }}</span>
-    <button
-      matButton="filled"
-      class="invoice-page-button"
-      [disabled]="currentPage === totalPages || isLoading"
-      (click)="nextPage()"
-    >
-      Next
+      [disabled]="isLoading || !hasMoreInvoices"
+      (click)="loadInvoices()">
+      {{ isLoading && invoices.length > 0 ? 'Loading...' : hasMoreInvoices ? 'Load More' : 'No More Invoices' }}
     </button>
   </div>
 </div>
