@@ -6,7 +6,7 @@ import {InvoiceApiItem, InvoiceService} from './invoice.service';
 
 interface InvoiceItem {
   id: string;
-  number: string;
+  invoiceNumber: string;
   description: string;
   amount: string;
   invoiceDate: string;
@@ -24,11 +24,10 @@ interface InvoiceItem {
 export class Invoice implements OnInit {
 
   invoices: InvoiceItem[] = [];
-  currentPage = 1;
-  totalPages = 1;
   pageSize = 10;
   searchKey = '';
   isLoading = false;
+  hasMoreInvoices = true;
   errorMessage = '';
 
   constructor(private readonly invoiceService: InvoiceService) {
@@ -39,31 +38,40 @@ export class Invoice implements OnInit {
   }
 
   async loadInvoices(): Promise<void> {
+    if (this.isLoading || !this.hasMoreInvoices) return;
+
     this.isLoading = true;
     this.errorMessage = '';
 
     try {
       const response = await this.invoiceService.listInvoices({
-        offset: (this.currentPage - 1) * this.pageSize,
+        offset: this.invoices.length,
         limit: this.pageSize,
-        searchKey: this.searchKey.trim(),
       });
 
-      this.invoices = response.invoices.map((invoice) => this.mapInvoice(invoice));
-      this.totalPages = this.getTotalPages(response.total, response.invoices.length);
+      const loadedInvoices = response.invoices.map((invoice) => this.mapInvoice(invoice));
+      this.invoices = [...this.invoices, ...loadedInvoices];
+      this.hasMoreInvoices = this.hasAdditionalInvoices(response.total, response.invoices.length);
     } catch (err) {
       console.error('Failed to load invoices', err);
-      this.invoices = [];
-      this.totalPages = 1;
       this.errorMessage = 'We could not load invoices. Please try again.';
     } finally {
       this.isLoading = false;
     }
   }
 
-  async searchInvoices(): Promise<void> {
-    this.currentPage = 1;
-    await this.loadInvoices();
+  get filteredInvoices(): InvoiceItem[] {
+    const query = this.searchKey.trim().toLowerCase();
+    if (!query) return this.invoices;
+
+    return this.invoices.filter((invoice) => [
+      invoice.invoiceNumber,
+      invoice.description,
+      invoice.amount,
+      invoice.invoiceDate,
+      invoice.dueDate,
+      invoice.status,
+    ].some((value) => value.toLowerCase().includes(query)));
   }
 
   viewInvoice(invoice: InvoiceItem): void {
@@ -78,30 +86,18 @@ export class Invoice implements OnInit {
     console.log('Pay invoice', invoice.id);
   }
 
-  async previousPage(): Promise<void> {
-    if (this.currentPage <= 1 || this.isLoading) return;
-    this.currentPage--;
-    await this.loadInvoices();
-  }
-
-  async nextPage(): Promise<void> {
-    if (this.currentPage >= this.totalPages || this.isLoading) return;
-    this.currentPage++;
-    await this.loadInvoices();
-  }
-
-  private getTotalPages(total: number | undefined, invoiceCount: number): number {
+  private hasAdditionalInvoices(total: number | undefined, invoiceCount: number): boolean {
     if (typeof total === 'number') {
-      return Math.max(1, Math.ceil(total / this.pageSize));
+      return this.invoices.length < total;
     }
 
-    return invoiceCount === this.pageSize ? this.currentPage + 1 : this.currentPage;
+    return invoiceCount === this.pageSize;
   }
 
   private mapInvoice(invoice: InvoiceApiItem): InvoiceItem {
     return {
       id: invoice.id,
-      number: invoice.number || invoice.id,
+      invoiceNumber: invoice.invoiceNumber,
       description: invoice.items?.map((item) => item.description).filter(Boolean).join(', ') || '-',
       amount: this.formatCurrency(invoice.amount, invoice.currency),
       invoiceDate: this.formatDate(invoice.createdAt),

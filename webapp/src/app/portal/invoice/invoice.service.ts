@@ -10,7 +10,7 @@ export interface InvoiceLineItem {
 
 export interface InvoiceApiItem {
   id: string;
-  number: string;
+  invoiceNumber: string;
   userId: string;
   subscriptionId: string;
   status: string;
@@ -32,7 +32,6 @@ interface InvoicesApiResponse {
 export interface InvoiceListParams {
   offset: number;
   limit: number;
-  searchKey?: string;
 }
 
 export interface InvoiceListResponse {
@@ -51,7 +50,6 @@ export class InvoiceService {
       params: {
         offset: params.offset,
         limit: params.limit,
-        searchKey: params.searchKey || undefined,
       },
     });
 
