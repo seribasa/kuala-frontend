@@ -8,7 +8,7 @@ export class DashboardService {
   }
 
   public async createSubscription(subscriptionId: string) {
-    return this.apiService.post('/subscriptions', {
+    return this.apiService.post('/subscriptions/event-driven', {
       planId: subscriptionId
     });
   }

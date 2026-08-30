@@ -1,96 +1,99 @@
-<h1 class="text-2xl font-bold mb-6">Subscription</h1>
+<div class="mx-auto w-full">
+  <app-page-header title="Subscription" description="Review your current plan and compare available upgrades."/>
 
-<!-- Current Plan -->
-<div class="bg-gray-100 border border-gray-200 rounded-lg p-8 mb-6 flex">
-  <div class="flex-1 pr-8">
-    <p class="text-sm text-gray-500 mb-1">Current Plan</p>
-    <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ subscription?.name }}</h2>
-    <div class="grid grid-cols-2 gap-x-8 mb-4">
-      <div>
-        <p class="text-sm text-gray-500">Status</p>
-        <p class="font-bold">{{ subscription?.status }}</p>
+  <!-- Current Plan -->
+  <div class="bg-gray-100 border border-gray-200 rounded-lg p-8 mb-6 flex">
+    <div class="flex-1 pr-8">
+      <p class="text-sm text-gray-500 mb-1">Current Plan</p>
+      <h2 class="text-3xl font-bold text-gray-900 mb-6">{{ subscription?.productName }}</h2>
+      <div class="grid grid-cols-2 gap-x-8 mb-4">
+        <div>
+          <p class="text-sm text-gray-500">Status</p>
+          <p class="font-bold">{{ subscription?.state }}</p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Price</p>
+          <p class="font-bold">{{ subscription?.price }} /{{ subscription?.billingPeriod }}</p>
+        </div>
       </div>
       <div>
-        <p class="text-sm text-gray-500">Price</p>
-        <p class="font-bold">{{ subscription?.price }} /{{ subscription?.billingCycle }}</p>
+        <p class="text-sm text-gray-500">Next Billing Date</p>
+        <p class="font-bold">{{ subscription?.chargedThroughDate }}</p>
       </div>
     </div>
-    <div>
-      <p class="text-sm text-gray-500">Next Billing Date</p>
-      <p class="font-bold">{{ subscription?.nextBillingDate }}</p>
-    </div>
-  </div>
 
-  <div class="w-px bg-gray-300"></div>
+    <div class="w-px bg-gray-300"></div>
 
-  <div class="flex-1 pl-8">
-    <p class="text-sm text-gray-500 mb-3">Included Features</p>
-    <ul class="space-y-2">
-      @for (feature of subscription?.features; track feature) {
-        <li class="text-sm text-gray-700">{{ feature }}</li>
-      }
-    </ul>
-  </div>
-</div>
-
-<!-- Upgrade Plan -->
-<div class="bg-gray-100 border border-gray-200 rounded-lg p-8 mb-8">
-  <h2 class="text-sm font-bold tracking-widest uppercase text-center mb-6">Upgrade Plan</h2>
-
-  <div class="flex justify-center mb-6">
-    <mat-button-toggle-group [value]="billingCycle" (change)="setBillingCycle($event.value)">
-      <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
-      <mat-button-toggle value="yearly">Yearly</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-
-  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-    @for (plan of displayedPlans(); track plan.id) {
-      <div class="bg-white border border-gray-200 rounded-lg p-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-3">{{ plan.name }}</h3>
-        @if (plan.selectable) {
-          <p class="text-3xl font-bold text-gray-900 mb-6">
-            {{ plan.price }}<span class="text-sm font-normal text-gray-500">/month</span>
-          </p>
-        } @else {
-          <p class="text-3xl font-bold text-gray-900 mb-6">Contact Us</p>
+    <div class="flex-1 pl-8">
+      <p class="text-sm text-gray-500 mb-3">Included Features</p>
+      <ul class="space-y-2">
+        @for (feature of subscription?.features; track feature) {
+          <li class="text-sm text-gray-700">{{ feature }}</li>
         }
-        <button mat-flat-button
-                class="!w-full !bg-gray-900 !text-white !text-xs !font-bold !tracking-widest uppercase !rounded-sm">
-          SELECT PLAN
-        </button>
-      </div>
-    }
+      </ul>
+    </div>
   </div>
-</div>
 
-<!-- Feature Comparison -->
-<h2 class="text-base font-semibold mb-4">Feature Comparison</h2>
-<div class="border border-gray-200 rounded-lg overflow-hidden">
-  <table class="w-full text-sm">
-    <thead>
-    <tr class="bg-white border-b border-gray-200">
-      <th class="text-left p-4 font-semibold text-gray-700">Feature</th>
-      @for (plan of monthlyPlans; track plan.id) {
-        <th class="text-center p-4 font-semibold text-gray-700">{{ plan.name }}</th>
-      }
-    </tr>
-    </thead>
-    <tbody>
-      @for (feature of allFeatures; track feature) {
-        <tr class="border-b border-gray-200">
-          <td class="p-4 text-gray-700">{{ feature }}</td>
-          @for (plan of monthlyPlans; track plan.id) {
-            <td class="text-center p-4">
-              @if (planHasFeature(plan, feature)) {
-                <mat-icon aria-hidden="false" fontIcon="check"></mat-icon>
-              } @else {
-                <mat-icon aria-hidden="false" fontIcon="close"></mat-icon>
-              }
-            </td>
+  <!-- Upgrade Plan -->
+  <div class="bg-gray-100 border border-gray-200 rounded-lg p-8 mb-8">
+    <h2 class="text-sm font-bold tracking-widest uppercase text-center mb-6">Upgrade Plan</h2>
+
+    <div class="flex justify-center mb-6">
+      <mat-button-toggle-group [value]="billingCycle" (change)="setBillingCycle($event.value)">
+        <mat-button-toggle value="monthly">Monthly</mat-button-toggle>
+        <mat-button-toggle value="yearly">Yearly</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      @for (plan of displayedPlans(); track plan.id) {
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+          <h3 class="text-lg font-bold text-gray-900 mb-3">{{ plan.name }}</h3>
+          @if (plan.selectable) {
+            <p class="text-3xl font-bold text-gray-900 mb-6">
+              {{ plan.price }}<span class="text-sm font-normal text-gray-500">/month</span>
+            </p>
+          } @else {
+            <p class="text-3xl font-bold text-gray-900 mb-6">Contact Us</p>
           }
-        </tr>
+          <button mat-flat-button
+                  class="!w-full !bg-gray-900 !text-white !text-xs !font-bold !tracking-widest uppercase !rounded-sm">
+            SELECT PLAN
+          </button>
+        </div>
       }
-    </tbody>
-  </table>
+    </div>
+  </div>
+
+  <!-- Feature Comparison -->
+  <h2 class="text-base font-semibold mb-4">Feature Comparison</h2>
+  <div class="border border-gray-200 rounded-lg overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+      <tr class="bg-white border-b border-gray-200">
+        <th class="text-left p-4 font-semibold text-gray-700">Feature</th>
+        @for (plan of monthlyPlans; track plan.id) {
+          <th class="text-center p-4 font-semibold text-gray-700">{{ plan.name }}</th>
+        }
+      </tr>
+      </thead>
+      <tbody>
+        @for (feature of allFeatures; track feature) {
+          <tr class="border-b border-gray-200">
+            <td class="p-4 text-gray-700">{{ feature }}</td>
+            @for (plan of monthlyPlans; track plan.id) {
+              <td class="text-center p-4">
+                @if (planHasFeature(plan, feature)) {
+                  <mat-icon aria-hidden="false" fontIcon="check"></mat-icon>
+                } @else {
+                  <mat-icon aria-hidden="false" fontIcon="close"></mat-icon>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
 </div>
