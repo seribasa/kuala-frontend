@@ -38,17 +38,17 @@
             <td colspan="7" class="p-8 text-center text-gray-500">Loading invoices...</td>
           </tr>
         } @else {
-          @for (invoice of filteredInvoices; track invoice.id) {
+          @for (invoice of filteredInvoices; track invoice.invoiceNumber) {
             <tr class="border-b border-gray-200 last:border-b-0">
               <td class="p-4 text-gray-600">{{ invoice.invoiceNumber }}</td>
-              <td class="p-4 text-gray-600">{{ invoice.description }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.items[0]?.phaseName }}</td>
               <td class="p-4 text-gray-600">{{ invoice.amount }}</td>
-              <td class="p-4 text-gray-600">{{ invoice.invoiceDate }}</td>
-              <td class="p-4 text-gray-600">{{ invoice.dueDate }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.items[0]?.startDate }}</td>
+              <td class="p-4 text-gray-600">{{ invoice.items[0]?.endDate }}</td>
               <td class="p-4 text-gray-600">{{ invoice.status }}</td>
               <td class="p-4">
                 <div class="flex gap-4">
-                  @if (invoice.canPay) {
+                  @if (invoice.balance > 0) {
                     <button mat-flat-button type="button" (click)="payInvoice(invoice)">Pay</button>
                   }
                   <button mat-stroked-button type="button" (click)="viewInvoice(invoice)">View</button>

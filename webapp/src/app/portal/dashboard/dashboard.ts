@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DashboardService} from './dashboard.service';
 import {MatButton} from '@angular/material/button';
-import {PageHeader} from '../../shared/page-header';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatButton, PageHeader],
+  imports: [MatButton],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

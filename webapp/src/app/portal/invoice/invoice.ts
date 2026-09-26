@@ -2,19 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatButton} from '@angular/material/button';
 import {PageHeader} from '../../shared/page-header';
 import {FormsModule} from '@angular/forms';
-import {InvoiceApiItem, InvoiceService} from './invoice.service';
-
-interface InvoiceItem {
-  id: string;
-  invoiceNumber: string;
-  description: string;
-  amount: string;
-  invoiceDate: string;
-  dueDate: string;
-  status: string;
-  canPay: boolean;
-  raw: InvoiceApiItem;
-}
+import {InvoiceService} from './invoice.service';
 
 @Component({
   selector: 'app-invoice',
@@ -23,7 +11,7 @@ interface InvoiceItem {
 })
 export class Invoice implements OnInit {
 
-  invoices: InvoiceItem[] = [];
+  invoices: any[] = [];
   pageSize = 10;
   searchKey = '';
   isLoading = false;
@@ -49,7 +37,7 @@ export class Invoice implements OnInit {
         limit: this.pageSize,
       });
 
-      const loadedInvoices = response.invoices.map((invoice) => this.mapInvoice(invoice));
+      const loadedInvoices = response.invoices;
       this.invoices = [...this.invoices, ...loadedInvoices];
       this.hasMoreInvoices = this.hasAdditionalInvoices(response.total, response.invoices.length);
     } catch (err) {
@@ -60,7 +48,7 @@ export class Invoice implements OnInit {
     }
   }
 
-  get filteredInvoices(): InvoiceItem[] {
+  get filteredInvoices(): any[] {
     const query = this.searchKey.trim().toLowerCase();
     if (!query) return this.invoices;
 
@@ -74,16 +62,32 @@ export class Invoice implements OnInit {
     ].some((value) => value.toLowerCase().includes(query)));
   }
 
-  viewInvoice(invoice: InvoiceItem): void {
+  viewInvoice(invoice: any): void {
     console.log('View invoice', invoice.id);
   }
 
-  savePdf(invoice: InvoiceItem): void {
+  savePdf(invoice: any): void {
     console.log('Save invoice PDF', invoice.id);
   }
 
-  payInvoice(invoice: InvoiceItem): void {
-    console.log('Pay invoice', invoice.id);
+  async payInvoice(invoice: any): Promise<void> {
+    try {
+      this.errorMessage = '';
+      const redirectUrl = await this.invoiceService.payInvoice(invoice.invoiceId);
+      if (redirectUrl) {
+        this.redirectTo(redirectUrl);
+      } else {
+        this.errorMessage = 'We could not initiate payment. Please try again.';
+      }
+    } catch (err) {
+      console.error('Failed to pay invoice', err);
+      this.errorMessage = 'We could not initiate payment. Please try again.';
+    }
+  }
+
+  redirectTo(url: string): void {
+    // window.location.href = url;
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   private hasAdditionalInvoices(total: number | undefined, invoiceCount: number): boolean {
@@ -94,49 +98,4 @@ export class Invoice implements OnInit {
     return invoiceCount === this.pageSize;
   }
 
-  private mapInvoice(invoice: InvoiceApiItem): InvoiceItem {
-    return {
-      id: invoice.id,
-      invoiceNumber: invoice.invoiceNumber,
-      description: invoice.items?.map((item) => item.description).filter(Boolean).join(', ') || '-',
-      amount: this.formatCurrency(invoice.amount, invoice.currency),
-      invoiceDate: this.formatDate(invoice.createdAt),
-      dueDate: this.formatDate(invoice.dueDate),
-      status: this.formatStatus(invoice.status),
-      canPay: invoice.balance > 0,
-      raw: invoice,
-    };
-  }
-
-  private formatCurrency(amount: number, currency: string): string {
-    try {
-      return new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currency || 'USD',
-      }).format(amount);
-    } catch {
-      return `${currency} ${amount}`.trim();
-    }
-  }
-
-  private formatDate(value: string): string {
-    if (!value) return '-';
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return '-';
-
-    return new Intl.DateTimeFormat(undefined, {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    }).format(date);
-  }
-
-  private formatStatus(status: string): string {
-    return status
-      .split(/[-_\s]+/)
-      .filter(Boolean)
-      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-      .join(' ');
-  }
 }

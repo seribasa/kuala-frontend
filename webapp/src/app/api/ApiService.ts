@@ -11,6 +11,8 @@ export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
 export interface ApiRequestOptions {
   params?: Record<string, any> | HttpParams;
   headers?: HttpHeaders | Record<string, string>;
+  observe?: 'body' | 'response' | 'events';
+  responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
 }
 
 @Injectable({providedIn: 'root'})
@@ -58,11 +60,17 @@ export class ApiService {
     const headers = this.buildHeaders(options?.headers);
     const params = this.buildParams(options?.params);
 
-    const obs$ = this.http
-      .request<T>(method, fullUrl, {body, headers, params})
-      .pipe(catchError((error) => this.handleError(error, {method, fullUrl})));
+    const obs$ = (
+      this.http.request<T>(method, fullUrl, {
+        body,
+        headers,
+        params,
+        observe: (options?.observe as any) ?? 'body',
+        responseType: (options?.responseType as any) ?? 'json',
+      }) as any
+    ).pipe(catchError((error: unknown) => this.handleError(error, {method, fullUrl})));
 
-    return firstValueFrom(obs$);
+    return firstValueFrom(obs$) as Promise<T>;
   }
 
   private buildHeaders(custom?: HttpHeaders | Record<string, string>): HttpHeaders {
@@ -125,6 +133,7 @@ export class ApiService {
           'An unexpected error occurred while calling the API.',
         url: ctx.fullUrl,
         method: ctx.method,
+        headers: error.headers,
         details: error.error ?? null,
       };
       // console.error('[ApiService]', normalized);
