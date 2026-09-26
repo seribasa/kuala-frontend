@@ -1,0 +1,21 @@
+<div class="mx-auto w-full max-w-2xl">
+  <app-page-header title="Payment Successful" description="Your invoice payment has been processed successfully." />
+
+  <div class="mt-6 rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+    <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
+      <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+
+    <h2 class="text-xl font-semibold text-gray-900">Thank you for your payment!</h2>
+    <p class="mt-2 text-sm text-gray-600">
+      Your payment has been received and your invoice status has been updated.
+    </p>
+
+    <div class="mt-8 flex justify-center gap-4">
+      <a mat-flat-button routerLink="/portal/invoice">View Invoices</a>
+      <a mat-stroked-button routerLink="/portal/dashboard">Go to Dashboard</a>
+    </div>
+  </div>
+</div>

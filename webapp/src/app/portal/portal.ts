@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AuthService} from '../auth/auth.service';
-import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-portal',
-  imports: [RouterLinkActive, RouterOutlet, RouterLink, MatButton, MatIcon],
+  imports: [RouterLinkActive, RouterOutlet, RouterLink, MatIcon],
   templateUrl: './portal.html',
   styleUrl: './portal.css'
 })

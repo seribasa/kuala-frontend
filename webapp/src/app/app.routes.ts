@@ -10,6 +10,8 @@ import {Help} from './public/help/help';
 import {Profile} from './portal/profile/profile';
 import {Subscriptions} from './portal/subscriptions/subscriptions';
 import {Invoice} from './portal/invoice/invoice';
+import {PaymentSuccess} from './portal/invoice/payment-success/payment-success';
+import {PaymentFailed} from './portal/invoice/payment-failed/payment-failed';
 
 export const routes: Routes = [
   {
@@ -31,6 +33,8 @@ export const routes: Routes = [
       {path: 'dashboard', component: Dashboard},
       {path: 'subscriptions', component: Subscriptions},
       {path: 'invoice', component: Invoice},
+      {path: 'invoice/success', component: PaymentSuccess},
+      {path: 'invoice/failed', component: PaymentFailed},
       {path: 'profile', component: Profile},
       {path: 'about', component: About},
       {path: 'contact', component: Contact},
