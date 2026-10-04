@@ -49,9 +49,7 @@ export class InvoiceService {
       }
     );
 
-    console.log(response);
     const location:any = response?.body?.data?.redirect_url;
-    console.log(location);
 
     return location ?? null;
   }
