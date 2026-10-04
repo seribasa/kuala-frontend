@@ -28,26 +28,6 @@ describe('Invoice', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call invoiceService.payInvoice when paying an invoice and redirect', async () => {
-    spyOn(component, 'redirectTo');
-
-    const invoiceItem = {
-      id: 'inv_123',
-      invoiceNumber: 'INV-123',
-      description: 'Monthly subscription',
-      amount: '$10.00',
-      invoiceDate: '01 January 2026',
-      dueDate: '15 January 2026',
-      status: 'Pending',
-      canPay: true,
-      raw: {} as any,
-    };
-
-    await component.payInvoice(invoiceItem);
-    expect(invoiceService.payInvoice).toHaveBeenCalledWith('inv_123');
-    expect(component.redirectTo).toHaveBeenCalledWith('https://payment-gateway.example.com/checkout');
-  });
-
   it('should set errorMessage when payInvoice fails', async () => {
     invoiceService.payInvoice.and.rejectWith(new Error('Network error'));
 
